@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pure CSS auto-aligning, flexbox based tree</title>
+</head>
+<body>
+
+<style>
+
+    .i:before, .v:before, .v:after {
+        display: block;
+        position: absolute;
+        content: "";
+        border-left: 1px solid black;
+        width: 0;
+    }
+
+    .b {
+        position: relative;
+    }
+
+    .b > .i:before {
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 7;
+    }
+
+    .c > .b:first-child > .i:before {
+        height: calc(100% / 2);
+        top: auto;
+        bottom: 0;
+        left: 0;
+        z-index: 6;
+    }
+
+    .c > .b:first-child > .i > .f1 > .v:before {
+        border-left: 1px solid black;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 6;
+    }
+
+    .c > .b:last-child > .i:before {
+        height: calc(100%);
+        top: 0;
+        left: 0;
+        z-index: 7;
+        mix-blend-mode: difference;
+        border-color: white;
+    }
+
+    .v:before {
+        height: calc(100%);
+        left: 0;
+        z-index: 7;
+    }
+
+    .v {
+        position: relative;
+        border-bottom: 1px solid #bfbfbf;
+        float: left;
+    }
+
+    .i {
+        display: flex;
+    }
+
+    .c {
+        float: left;
+        display: none;
+    }
+
+    .b.bc > .i > .f2 > .c {
+        display: block;
+    }
+
+    .b.bc > .i > .f1 > .v:after {
+        height: calc(100%);
+        bottom: -1px;
+        right: -1px;
+        z-index: 7;
+        border-color: #ffffff;
+    }
+
+    .b.bc > .i > .f2 > .c:before {
+        height: calc(100% / 2);
+        top: 50%;
+        border-color: #ffba25;
+    }
+
+    .root > .i:before {
+        display: none;
+    }
+
+    .root > .i > .f1 > .v:before {
+        display: none;
+    }
+
+    .root > .i > .f1 > .v {
+        padding-left: 0;
+    }
+
+    .root > .i > .f1:before {
+        border:0;
+    }
+
+    div {
+        box-sizing: border-box;
+    }
+
+    .t {
+        display: inline-block;
+        position: relative;
+        top: 4px;
+        padding: 3px 15px;
+        border: 2px solid transparent;
+        border-radius: 15px;
+    }
+
+    .b.selected > .i > .f1 > .v > .t {
+        border-color: green;
+    }
+
+    .c > .b:only-child > .i:before {
+        display: none;
+    }
+
+    .f1, .f2 {
+        display: flex;
+        align-items: stretch;
+        flex-direction: column;
+        float: left;
+        flex: 0;
+    }
+
+    .f1:before, .f1:after, .f2:before, .f2:after {
+        content: "";
+        display: flex;
+        flex: 1;
+        align-items: flex-end;
+        color: white;
+    }
+
+    .b:last-child > .i > .f1:after {
+        position: relative;
+        right: -1px;
+        z-index: 6;
+    }
+
+    .b:first-child > .i > .f1:after {
+        border-left: 1px solid black;
+        position: relative;
+        left: 0;
+        z-index: 11;
+    }
+
+    .b > .i > .f2:after {
+        border-left: 1px solid black;
+        position: relative;
+        left: 0;
+        z-index: 11;
+        opacity: 0.2;
+    }
+
+    .b.bc > .i > .f2 > .c:before {
+        height: calc(100%/2);
+        top: 50%;
+        border-color: #ffba25;
+        z-index: 5;
+        content: "";
+        display: block;
+        border-left: 1px solid black;
+        position: absolute;
+    }
+
+    .b > .i > .f2 > .c:after {
+        height: calc(100% / 2);
+        z-index: 6;
+        content: "";
+        display: block;
+        border-left: 1px solid #ffffff;
+        position: absolute;
+        top: 0;
+        bottom: auto;
+        right: auto;
+    }
+
+    .b:first-child.bc > .i > .f1 > .v:after {
+        z-index: 11;
+    }
+
+    .i:after {
+        border-left: 1px solid #ffffff;
+        content: "";
+        display: block;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        z-index: 9999;
+        opacity: 0.8;
+    }
+
+    .f1:before {
+        border-left: 1px solid black;
+        z-index: 99;
+    }
+
+    .b:first-child > .i > .f1:before {
+        border-width: 0;
+    }
+
+</style>
+<div class="b bc root">
+    <div class="i">
+        <div class="f1">
+            <div class="v">
+                <div class="t">branch</div>
+            </div>
+        </div>
+        <div class="f2">
+            <div class="c">
+                <div class="b bc">
+                    <div class="i">
+                        <div class="f1">
+                            <div class="v">
+                                <div class="t">child1</div>
+                            </div>
+                        </div>
+                        <div class="f2">
+                            <div class="c">
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="b bc">
+                    <div class="i">
+                        <div class="f1">
+                            <div class="v">
+                                <div class="t">child2</div>
+                            </div>
+                        </div>
+                        <div class="f2">
+                            <div class="c">
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child2</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child3</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="b">
+                    <div class="i">
+                        <div class="f1">
+                            <div class="v">
+                                <div class="t">child3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="b bc" style="">
+                    <div class="i">
+                        <div class="f1">
+                            <div class="v">
+                                <div class="t">branch</div>
+                            </div>
+                        </div>
+                        <div class="f2">
+                            <div class="c">
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child1</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child2</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="b">
+                                    <div class="i">
+                                        <div class="f1">
+                                            <div class="v">
+                                                <div class="t">child3</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
